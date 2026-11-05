@@ -1,7 +1,7 @@
 package de.junglecraft.mod.mixin;
 
 import de.junglecraft.mod.Junglecraft;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.ConnectScreen;
 import net.minecraft.client.gui.screens.Screen;
