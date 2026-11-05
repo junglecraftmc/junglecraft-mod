@@ -32,7 +32,12 @@ jobs:
           echo "JAR=$JAR" >> $GITHUB_ENV
           unzip -l "$JAR"
           echo "--- refmap ---"
-          unzip -p "$JAR" '*refmap.json'
+          unzip -p "$JAR" '*refmap.json' || echo "(kein refmap)"
+          echo "--- Mixin-Ziele im Bytecode ---"
+          mkdir -p /tmp/chk && cd /tmp/chk && unzip -q -o "$GITHUB_WORKSPACE/$JAR"
+          for c in de/junglecraft/mod/mixin/*.class de/junglecraft/mod/Junglecraft.class; do
+            echo "== $c"; javap -v "$c" | grep -E "Utf8 .*(method_|class_|net/minecraft|renderPanorama|renderLogo|init)" | sed 's/.*Utf8 //' | sort -u
+          done
 
       - uses: actions/upload-artifact@v4
         with:
