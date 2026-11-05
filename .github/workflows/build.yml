@@ -30,6 +30,7 @@ jobs:
         run: |
           JAR=$(ls build/libs/*.jar | grep -v sources)
           echo "JAR=$JAR" >> $GITHUB_ENV
+          echo "VERSION=$(grep '^mod_version' gradle.properties | cut -d= -f2)" >> $GITHUB_ENV
           unzip -l "$JAR"
           echo "--- refmap ---"
           unzip -p "$JAR" '*refmap.json' || echo "(kein refmap)"
@@ -60,7 +61,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          VERSION=$(grep '^mod_version' gradle.properties | cut -d= -f2)
           gh release delete "v$VERSION" -y --cleanup-tag 2>/dev/null || true
           gh release create "v$VERSION" "/tmp/dist/$(basename $JAR)" --target "$GITHUB_SHA" \
             --title "Junglecraft Mod $VERSION" --notes "Für Minecraft 1.21.11 (Fabric). Einfach in den mods-Ordner legen."
